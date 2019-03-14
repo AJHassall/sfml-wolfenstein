@@ -1,29 +1,29 @@
+#include <string>
+#include <iostream>
+#include <filesystem>
 #include "texturesheet.h"
 
 
-texturesheet::texturesheet()
-{
-	LOG("texture sheet created\n");
-
-}
 
 
-texturesheet::~texturesheet()
-{
-	LOG("texture sheet destroyed\n")
-}
 
-void texturesheet::updateTexture(const std::string& path)
-{
 
-		for (uint8_t x = 0; x < 11; x++)
-		{
-			sf::Image img;
-			//FindFirstFileA("D:\\Dev\\C++\\SFML\\res\\", s);
-			img.loadFromFile(path+textureNames[x]);
-			this->update(img.getPixelsPtr(), m_TEXTURE_WIDTH, m_TEXTURE_HEIGHT, m_TEXTURE_WIDTH * x, 0);
-		}
+namespace fs = std::experimental::filesystem;
+
+texturesheet::texturesheet(const std::wstring& path,uint8_t numberOfFiles) {
+
+	this->create(m_TEXTURE_WIDTH * numberOfFiles, m_TEXTURE_HEIGHT);
 	
+	int8_t x = 0;
+	for (const auto & entry : fs::directory_iterator(path))
+	{
+		std::cout << entry.path() << std::endl;
+
+		sf::Image img;
+		if(!img.loadFromFile(entry.path().string()))
+			std::cout<<"load failed\n";
+		this->update(img.getPixelsPtr(), m_TEXTURE_WIDTH, m_TEXTURE_HEIGHT, m_TEXTURE_WIDTH * x, 0);
+		x++; 
+
+	}
 }
-
-

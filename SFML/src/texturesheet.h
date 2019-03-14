@@ -1,34 +1,15 @@
 #pragma once
 
-#include "includes.h"
-#include "SFML/Graphics.hpp"
-//#include <fileapi.h>
-#include <array>
 #include <string>
+#include "SFML/Graphics.hpp"
 
-class texturesheet: public sf::Texture
-{
-public:
-	texturesheet();
-	~texturesheet();
+class texturesheet :public sf::Texture {
 
-	void updateTexture(const std::string& path);
 
 public:
-	struct texturelocation
-	{
-		int X;
-		int Y;
-	};
-
+	texturesheet(const std::wstring& path, uint8_t numberOfFiles);
 
 private:
 
-	const int m_TEXTURE_WIDTH = 64;
-	const int m_TEXTURE_HEIGHT =64;
-
-	std::array < std::string, 11> textureNames{"barrel.png", "bluestone.png", "colorstone.png","eagle.png",
-			"greenlight.png","greystone.png","mossy.png","pillar.png","purplestone.png","redbrick.png","wood.png"};
-
+	const int8_t m_TEXTURE_WIDTH=64, m_TEXTURE_HEIGHT=64;
 };
-

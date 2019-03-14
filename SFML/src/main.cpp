@@ -1,19 +1,25 @@
 #include <SFML/Graphics.hpp>
-
-#include "includes.h"
-
+#include <string>
+#include "texturesheet.h"
+#include "player.h"
+#include "raycast.h"
 int main()
+
 {
+
+
+
 	// create the window
-	sf::RenderWindow window(sf::VideoMode(512, 256), "Particles");
-	window.setFramerateLimit(60);
-	
+	static sf::RenderWindow window(sf::VideoMode(640, 480), "Wolfenstein");
+	window.setFramerateLimit(30);
 
-	// create the particle system
+	texturesheet ts=texturesheet(L"D:/Dev/C++/SFML/textures", 11);
 
+	auto s=sf::Sprite(ts);
 
-	// create a clock to track the elapsed time
-	
+	player p = player();
+	raycast r = raycast(640, p, ts, window);
+
 
 	// run the main loop
 	while (window.isOpen())
@@ -21,7 +27,7 @@ int main()
 		// handle events
 		sf::Event event;
 		while (window.pollEvent(event))
-		{
+		{	
 			switch (event.type) {
 			case sf::Event::Closed:
 				window.close();
@@ -31,14 +37,9 @@ int main()
 		}
 
 		window.clear(sf::Color::Black);
-
-
+		r.update();
 		window.display();
 
-
-
-
 	}
-
 	return 0;
 }
