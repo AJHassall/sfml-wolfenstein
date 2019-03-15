@@ -18,7 +18,7 @@ int main()
 	auto s=sf::Sprite(ts);
 
 	player p = player();
-	raycast r = raycast(640, p, ts, window);
+	raycast r = raycast(640,480, p, ts, window);
 
 
 	// run the main loop

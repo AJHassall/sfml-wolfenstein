@@ -24,23 +24,23 @@ public:
 
 
 	inline void MoveForward() {
-		m_xPos += m_xDir;
-		m_yPos += m_yDir;
+		m_xPos += m_xDir*m_movespeed;
+		m_yPos += m_yDir*m_movespeed;
 	}
 	inline void MoveBackwards() {
-		m_xPos -= m_xDir;
-		m_yPos -= m_yDir;
+		m_xPos -= m_xDir*m_movespeed;
+		m_yPos -= m_yDir*m_movespeed;
 	}
 
 	inline void RotateClockWise() {
 		double oldDirX = m_xDir;
 		m_xDir = m_xDir * cos(-m_rotatespeed) - m_yDir * sin(-m_rotatespeed);
-		m_yDir = oldDirX * sin(-m_movespeed) + m_yDir * cos(-m_rotatespeed);
+		m_yDir = oldDirX * sin(-m_rotatespeed) + m_yDir * cos(-m_rotatespeed);
 	}
 	inline void RotateAntiClockWise() {
 		double oldDirX = m_xDir;
 		m_xDir = m_xDir * cos(m_rotatespeed) - m_yDir * sin(m_rotatespeed);
-		m_yDir = oldDirX * sin(m_movespeed) + m_yDir * cos(m_rotatespeed);
+		m_yDir = oldDirX * sin(m_rotatespeed) + m_yDir * cos(m_rotatespeed);
 	}
 
  

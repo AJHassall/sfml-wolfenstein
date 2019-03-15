@@ -3,8 +3,8 @@
 #include <cmath>
 #include "SFML/Graphics.hpp"
 
-raycast::raycast(int width, player & p, texturesheet& t, sf::RenderWindow& rw):
-	m_width(width), m_player(&p), m_textureSheet(&t),m_window(&rw)
+raycast::raycast(int width,int height, player & p, texturesheet& t, sf::RenderWindow& rw):
+	m_width(width),m_height(height), m_player(&p), m_textureSheet(&t),m_window(&rw)
 {
 
 }
@@ -16,18 +16,33 @@ using namespace std;
 void raycast::update()
 {
 
-	int WorldMap[10][10] = {
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,1},
-		{1,1,1,1,1,1,1,1,1,1} };
-
+	int WorldMap[24][24] =
+	{
+	  {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7,7,7,7,7,7,7,7},
+	  {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
+	  {4,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
+	  {4,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
+	  {4,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
+	  {4,0,4,0,0,0,0,5,5,5,5,5,5,5,5,5,7,7,0,7,7,7,7,7},
+	  {4,0,5,0,0,0,0,5,0,5,0,5,0,5,0,5,7,0,0,0,7,7,7,1},
+	  {4,0,6,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
+	  {4,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,1},
+	  {4,0,8,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
+	  {4,0,0,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,7,7,7,1},
+	  {4,0,0,0,0,0,0,5,5,5,5,0,5,5,5,5,7,7,7,7,7,7,7,1},
+	  {6,6,6,6,6,6,6,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
+	  {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+	  {6,6,6,6,6,6,0,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
+	  {4,4,4,4,4,4,0,4,4,4,6,0,6,2,2,2,2,2,2,2,3,3,3,3},
+	  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
+	  {4,0,0,0,0,0,0,0,0,0,0,0,6,2,0,0,5,0,0,2,0,0,0,2},
+	  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
+	  {4,0,6,0,6,0,0,0,0,4,6,0,0,0,0,0,5,0,0,0,0,0,0,2},
+	  {4,0,0,5,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
+	  {4,0,6,0,6,0,0,0,0,4,6,0,6,2,0,0,5,0,0,2,0,0,0,2},
+	  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
+	  {4,4,4,4,4,4,4,4,4,4,1,1,1,2,2,2,2,2,2,3,3,3,3,3}
+	};
 
 
 	auto _player= m_player->getPositionAndDirection();
@@ -95,24 +110,34 @@ void raycast::update()
 				side = 1;
 			}
 			//Check if ray has hit a wall
-			if (WorldMap[mapX][mapY] > 0) hit = 1;
+			if (WorldMap[mapY][mapX] > 0) hit = 1;
 		}
 		//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
 		if (side == 0) perpWallDist = (mapX - _player.x + (1 - stepX) / 2) / rayDirX;
 		else           perpWallDist = (mapY - _player.y + (1 - stepY) / 2) / rayDirY;
 
 		//Calculate height of line to draw on screen
-		int lineHeight = (int)(300 / perpWallDist);
+		int lineHeight = (int)(m_height / perpWallDist);
 
 		//calculate lowest and highest pixel to fill in current stripe
-		int drawStart = -lineHeight / 2 + 300 / 2;
+		int drawStart = -lineHeight / 2 + m_height / 2;
 		if (drawStart < 0)drawStart = 0;
-		int drawEnd = lineHeight / 2 + 300 / 2;
-		if (drawEnd >= 300)drawEnd = 300- 1;
+		int drawEnd = lineHeight / 2 + m_height / 2;
+		if (drawEnd >= m_height)drawEnd = m_height- 1;
+
+		int texNum = WorldMap[mapY][mapX]-1;
+		double wallX; //where exactly the wall was hit
+		if (side == 0) wallX = _player.y + perpWallDist * rayDirY;
+		else           wallX = _player.x + perpWallDist * rayDirX;
+		wallX -= floor((wallX));
 
 
+		int texWidth = 64;
+		int texX = int(wallX * double(texWidth));
+		if (side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
+		if (side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
 
-		sf::Sprite s = sf::Sprite(*m_textureSheet, sf::IntRect(200, 0, 1, 64));
+		sf::Sprite s = sf::Sprite(*m_textureSheet, sf::IntRect(texNum * 64 + texX, 0, 1, 64));
 		s.setPosition(x, drawStart);
 
 		double yscale = double(drawEnd - drawStart) / 64;
