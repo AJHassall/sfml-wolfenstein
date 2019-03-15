@@ -1,4 +1,9 @@
 bin/
 bin-int/
-SFML.sln
+*.sln
 .vs/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+
