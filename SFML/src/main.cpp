@@ -37,6 +37,7 @@ int main()
 		}
 
 		window.clear(sf::Color::Black);
+		p.update();
 		r.update();
 		window.display();
 

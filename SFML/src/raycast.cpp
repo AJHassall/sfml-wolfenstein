@@ -34,7 +34,7 @@ void raycast::update()
 	for (int x = 0; x < m_width; x++)
 	{
 
-		double planeX = _player.yDir, planeY = _player.xDir;
+		double planeX = _player.yDir, planeY = -_player.xDir;
 		double cameraX = 2 * x / double(m_width) - 1; //x-coordinate in camera space
 
 		double rayDirX = _player.xDir + planeX * cameraX;
@@ -112,9 +112,11 @@ void raycast::update()
 
 
 
-		sf::Sprite s = sf::Sprite(*m_textureSheet, sf::IntRect(64, 0, 1, 64));
+		sf::Sprite s = sf::Sprite(*m_textureSheet, sf::IntRect(200, 0, 1, 64));
 		s.setPosition(x, drawStart);
-		s.setScale(64 / 64,1);
+
+		double yscale = double(drawEnd - drawStart) / 64;
+		s.setScale(1, yscale);
 		m_window->draw(s);
 		
 	}

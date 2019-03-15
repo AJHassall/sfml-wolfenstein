@@ -7,6 +7,8 @@ public:
 
 	~player();
 
+	void update();
+
 	struct PositionandRotation
 	{
 		double x;
@@ -46,7 +48,7 @@ public:
 
 private:
 	double m_xDir = 1, m_yDir = 0;
-	double m_xPos = 1, m_yPos = 1;
+	double m_xPos = 2, m_yPos = 2;
 
 	static const float m_movespeed;
 	static const float m_rotatespeed;
