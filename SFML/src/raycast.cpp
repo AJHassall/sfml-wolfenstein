@@ -121,9 +121,9 @@ void raycast::update()
 
 		//calculate lowest and highest pixel to fill in current stripe
 		int drawStart = -lineHeight / 2 + m_height / 2;
-		if (drawStart < 0)drawStart = 0;
+		//if (drawStart < 0)drawStart = 0;
 		int drawEnd = lineHeight / 2 + m_height / 2;
-		if (drawEnd >= m_height)drawEnd = m_height- 1;
+		//if (drawEnd >= m_height)drawEnd = m_height- 1;
 
 		int texNum = WorldMap[mapY][mapX]-1;
 		double wallX; //where exactly the wall was hit
