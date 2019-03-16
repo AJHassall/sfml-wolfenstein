@@ -5,7 +5,7 @@ project_name = "wolfenstein-sfml"
 workspace "%{project_name}"
   architecture "x64"
  -- Build Configurations...
-    configurations { "Development", "Release" }
+    configurations { "Debug", "Release" }
 
 output_dir = "%{cfg.system}_%{cfg.buildcfg}-%{cfg.architecture}"
 

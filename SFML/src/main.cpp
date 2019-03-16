@@ -13,7 +13,7 @@ int main()
 	static sf::RenderWindow window(sf::VideoMode(640, 480), "Wolfenstein");
 	window.setFramerateLimit(30);
 
-	texturesheet ts=texturesheet(L"D:/Dev/C++/SFML/textures", 11);
+	texturesheet ts=texturesheet(L"textures", 11);
 
 	auto s=sf::Sprite(ts);
 

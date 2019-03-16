@@ -113,16 +113,16 @@ void raycast::update()
 			if (WorldMap[mapY][mapX] > 0) hit = 1;
 		}
 		//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
-		if (side == 0) perpWallDist = (mapX - _player.x + (1 - stepX) / 2) / rayDirX;
-		else           perpWallDist = (mapY - _player.y + (1 - stepY) / 2) / rayDirY;
+		if (side == 0) perpWallDist = (mapX - _player.x + ((1 - stepX) >> 1)) / rayDirX;
+		else           perpWallDist = (mapY - _player.y + ((1 - stepY) >> 1)) / rayDirY;
 
 		//Calculate height of line to draw on screen
 		int lineHeight = (int)(m_height / perpWallDist);
 
 		//calculate lowest and highest pixel to fill in current stripe
-		int drawStart = -lineHeight / 2 + m_height / 2;
+		int drawStart = -(lineHeight >> 1) + (m_height >> 1);
 		//if (drawStart < 0)drawStart = 0;
-		int drawEnd = lineHeight / 2 + m_height / 2;
+		int drawEnd = (lineHeight >> 1) + (m_height >> 1);
 		//if (drawEnd >= m_height)drawEnd = m_height- 1;
 
 		int texNum = WorldMap[mapY][mapX]-1;
@@ -137,10 +137,16 @@ void raycast::update()
 		if (side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
 		if (side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
 
-		sf::Sprite s = sf::Sprite(*m_textureSheet, sf::IntRect(texNum * 64 + texX, 0, 1, 64));
+		sf::Sprite s = sf::Sprite(*m_textureSheet, sf::IntRect((texNum <<6) + texX, 0, 1, 64));
 		s.setPosition(x, drawStart);
 
-		double yscale = double(drawEnd - drawStart) / 64;
+		int asd = 4;
+		int adfasd = asd << 6;
+		int gffsd = asd * 64;
+
+
+		double yscale = double(drawEnd - drawStart)/64;
+	
 		s.setScale(1, yscale);
 		m_window->draw(s);
 		
