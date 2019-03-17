@@ -140,13 +140,11 @@ void raycast::update()
 		sf::Sprite s = sf::Sprite(*m_textureSheet, sf::IntRect((texNum <<6) + texX, 0, 1, 64));
 		s.setPosition(x, drawStart);
 
-		int asd = 4;
-		int adfasd = asd << 6;
-		int gffsd = asd * 64;
+
 
 
 		double yscale = double(drawEnd - drawStart)/64;
-	
+
 		s.setScale(1, yscale);
 		m_window->draw(s);
 		
