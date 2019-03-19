@@ -1,7 +1,10 @@
-#include "raycast.h"
-
 #include <cmath>
+
+
+#include "gameworld.h"
+#include "raycast.h"
 #include "SFML/Graphics.hpp"
+#include "gameworld.h"
 
 raycast::raycast(int width,int height, player & p, texturesheet& t, sf::RenderWindow& rw):
 	m_width(width),m_height(height), m_player(&p), m_textureSheet(&t),m_window(&rw)
@@ -16,34 +19,8 @@ using namespace std;
 void raycast::update()
 {
 
-	int WorldMap[24][24] =
-	{
-	  {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7,7,7,7,7,7,7,7},
-	  {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
-	  {4,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
-	  {4,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
-	  {4,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
-	  {4,0,4,0,0,0,0,5,5,5,5,5,5,5,5,5,7,7,0,7,7,7,7,7},
-	  {4,0,5,0,0,0,0,5,0,5,0,5,0,5,0,5,7,0,0,0,7,7,7,1},
-	  {4,0,6,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
-	  {4,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,1},
-	  {4,0,8,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
-	  {4,0,0,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,7,7,7,1},
-	  {4,0,0,0,0,0,0,5,5,5,5,0,5,5,5,5,7,7,7,7,7,7,7,1},
-	  {6,6,6,6,6,6,6,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
-	  {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-	  {6,6,6,6,6,6,0,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
-	  {4,4,4,4,4,4,0,4,4,4,6,0,6,2,2,2,2,2,2,2,3,3,3,3},
-	  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
-	  {4,0,0,0,0,0,0,0,0,0,0,0,6,2,0,0,5,0,0,2,0,0,0,2},
-	  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
-	  {4,0,6,0,6,0,0,0,0,4,6,0,0,0,0,0,5,0,0,0,0,0,0,2},
-	  {4,0,0,5,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
-	  {4,0,6,0,6,0,0,0,0,4,6,0,6,2,0,0,5,0,0,2,0,0,0,2},
-	  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
-	  {4,4,4,4,4,4,4,4,4,4,1,1,1,2,2,2,2,2,2,3,3,3,3,3}
-	};
-
+	//int WorldMap[24][24] = gameworld::map;
+	
 
 	auto _player= m_player->getPositionAndDirection();
 	for (int x = 0; x < m_width; x++)
@@ -110,7 +87,7 @@ void raycast::update()
 				side = 1;
 			}
 			//Check if ray has hit a wall
-			if (WorldMap[mapY][mapX] > 0) hit = 1;
+			if (gameworld::map[mapY][mapX] > 0) hit = 1;
 		}
 		//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
 		if (side == 0) perpWallDist = (mapX - _player.x + ((1 - stepX) >> 1)) / rayDirX;
@@ -125,7 +102,7 @@ void raycast::update()
 		int drawEnd = (lineHeight >> 1) + (m_height >> 1);
 		//if (drawEnd >= m_height)drawEnd = m_height- 1;
 
-		int texNum = WorldMap[mapY][mapX]-1;
+		int texNum = gameworld::map[mapY][mapX]-1;
 		double wallX; //where exactly the wall was hit
 		if (side == 0) wallX = _player.y + perpWallDist * rayDirY;
 		else           wallX = _player.x + perpWallDist * rayDirX;
